@@ -38,13 +38,13 @@ export const REFRESH_TOKEN_COOKIE_OPTIONS = {
 
 
 export const SMPT_CONFIG = {
-  host: process.env.SMTP_HOST || 'smtp.gmail.com',
-  port: process.env.SMTP_PORT || 587,
-  secure: process.env.SMTP_SECURE === 'false', // Convertir a booleano
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: process.env.SMTP_SECURE,
   auth: {
-    user: process.env.SMTP_USER || 'ddamiandelacruzc117@gmail.com',
-    pass: process.env.SMTP_PASS || 'htbo sizk ajbt mjqb',
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
   },
-  from: process.env.EMAIL_FROM || 'ddamiandelacruzc117@gmail.com'
+  from: process.env.EMAIL_FROM
 
 }
