@@ -25,7 +25,6 @@ import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
 // Controller
 import { AuthController } from './controllers/auth.controller';
 
-import { AuditoriaModule } from '@/modules/auditoria/auditoria.module';
 
 
 @Module({
@@ -42,7 +41,6 @@ import { AuditoriaModule } from '@/modules/auditoria/auditoria.module';
     JwtModule.register({
       global: true,
     }),
-    AuditoriaModule,
   ],
   controllers: [AuthController],
   providers: [
