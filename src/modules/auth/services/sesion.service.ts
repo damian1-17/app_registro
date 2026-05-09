@@ -6,7 +6,7 @@ import { Sesion } from '@/modules/auth/entities/sesion.entity';
 @Injectable()
 export class SesionService {
   constructor(
-    @InjectRepository(Sesion, 'PEDIDOS_DB')
+    @InjectRepository(Sesion, 'SEGURIDAD_DB')
     private readonly sesionRepository: Repository<Sesion>,
   ) {}
 

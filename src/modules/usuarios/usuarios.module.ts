@@ -7,9 +7,9 @@ import { Usuario } from '../auth/entities/usuario.entity';
 import { Rol } from '../auth/entities/rol.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Usuario, Rol], 'PEDIDOS_DB')],
+  imports: [TypeOrmModule.forFeature([Usuario, Rol], 'SEGURIDAD_DB')],
   controllers: [UsuariosController],
   providers: [UsuariosService],
   exports: [UsuariosService],
 })
-export class UsuariosModule {}
+export class UsuariosModule { }

@@ -14,7 +14,7 @@ import { seguridadDS } from '@/config/seguridadDS.config';
 //facturación
 import { EventEmitterModule } from "@nestjs/event-emitter";
 
-import { DatabaseModule } from "./database/data-sources.module";
+import { DatabaseModule } from "./database/database.module";
 
 
 //Usuarios

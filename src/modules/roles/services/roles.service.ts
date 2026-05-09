@@ -10,7 +10,7 @@ import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class RolesService {
   constructor(
-    @InjectRepository(Rol, 'PEDIDOS_DB')
+    @InjectRepository(Rol, 'SEGURIDAD_DB')
     private readonly rolRepository: Repository<Rol>,
   ) {}
 

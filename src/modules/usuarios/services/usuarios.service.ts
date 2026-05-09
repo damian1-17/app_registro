@@ -22,9 +22,9 @@ import { plainToInstance } from 'class-transformer';
 @Injectable()
 export class UsuariosService {
     constructor(
-        @InjectRepository(Usuario,'PEDIDOS_DB')
+        @InjectRepository(Usuario,'SEGURIDAD_DB')
         private readonly usuarioRepository: Repository<Usuario>,
-        @InjectRepository(Rol,'PEDIDOS_DB')
+        @InjectRepository(Rol,'SEGURIDAD_DB')
         private readonly rolRepository: Repository<Rol>,
     ) { }
 

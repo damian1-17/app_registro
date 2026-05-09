@@ -19,7 +19,7 @@ import { plainToClass } from 'class-transformer';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Usuario, 'PEDIDOS_DB')
+    @InjectRepository(Usuario, 'SEGURIDAD_DB')
     private readonly usuarioRepository: Repository<Usuario>,
     private readonly tokenService: TokenService,
     private readonly sesionService: SesionService,

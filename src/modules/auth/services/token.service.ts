@@ -11,7 +11,7 @@ import { AUTH_CONSTANTS } from '@/modules/auth/constants/auth.constants';
 @Injectable()
 export class TokenService {
   constructor(
-    @InjectRepository(Token, 'PEDIDOS_DB')
+    @InjectRepository(Token, 'SEGURIDAD_DB')
     private readonly tokenRepository: Repository<Token>,
     private readonly jwtService: JwtService,
   ) {}

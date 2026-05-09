@@ -22,12 +22,12 @@ export class PasswordRecoveryService {
   private readonly logger = new Logger(PasswordRecoveryService.name);
 
   constructor(
-    @InjectRepository(Usuario, 'PEDIDOS_DB')
+    @InjectRepository(Usuario, 'SEGURIDAD_DB')
     private readonly usuarioRepository: Repository<Usuario>,
-    @InjectRepository(PasswordRecoveryCode, 'PEDIDOS_DB')
+    @InjectRepository(PasswordRecoveryCode, 'SEGURIDAD_DB')
     private readonly recoveryCodeRepository: Repository<PasswordRecoveryCode>,
     private readonly emailService: EmailService,
-  ) {}
+  ) { }
 
   /**
    * Solicita recuperación de contraseña y envía código por email

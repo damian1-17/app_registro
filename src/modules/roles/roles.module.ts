@@ -6,9 +6,9 @@ import { RolesService } from '@/modules/roles/services/roles.service';
 import { Rol } from '../auth/entities/rol.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Rol], 'PEDIDOS_DB')],
+  imports: [TypeOrmModule.forFeature([Rol], 'SEGURIDAD_DB')],
   controllers: [RolesController],
   providers: [RolesService],
   exports: [RolesService],
 })
-export class RolesModule {}
+export class RolesModule { }

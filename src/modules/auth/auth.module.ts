@@ -36,7 +36,7 @@ import { AuthController } from './controllers/auth.controller';
       Token,
       Sesion,
       PasswordRecoveryCode, // ✅ Nueva entidad
-    ], 'PEDIDOS_DB'),
+    ], 'SEGURIDAD_DB'),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       global: true,
