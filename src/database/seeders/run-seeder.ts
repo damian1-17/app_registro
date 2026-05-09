@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { DataSource } from 'typeorm';
-import AppDataSource from '@/typeorm.config';
+import AppDataSource from '@/config/typeorm.config';
 
 import { seedInitialData } from './initial-seed';
 import { CreateUsersSeeder } from './user.seeder';

@@ -2,7 +2,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const facturacionDS: TypeOrmModuleOptions = {
-  name: 'facturacion',
   type: 'postgres',
   host: process.env.FACTURACION_DB_HOST,
   port: Number(process.env.FACTURACION_DB_PORT),

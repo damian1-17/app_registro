@@ -2,7 +2,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const seguridadDS: TypeOrmModuleOptions = {
-  name: 'seguridad',
   type: 'postgres',
   host: process.env.SEGURIDAD_DB_HOST,
   port: Number(process.env.SEGURIDAD_DB_PORT),
@@ -11,4 +10,4 @@ export const seguridadDS: TypeOrmModuleOptions = {
   database: process.env.SEGURIDAD_DB_NAME,
   synchronize: false,
   logging: true,
-};  
+};

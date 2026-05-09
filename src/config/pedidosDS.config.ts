@@ -2,8 +2,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const pedidosDS: TypeOrmModuleOptions = {
-  name: 'pedidos',
-  type: 'postgres',  // o postgres, mysql, etc.
+  type: 'postgres',
   host: process.env.PEDIDOS_DB_HOST,
   port: Number(process.env.PEDIDOS_DB_PORT),
   username: process.env.PEDIDOS_DB_USER,
