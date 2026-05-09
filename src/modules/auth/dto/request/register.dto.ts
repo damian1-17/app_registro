@@ -22,12 +22,5 @@ export class RegisterDto {
   })
   password: string;
 
-  @ApiProperty({ example: '1234567890' })
-  @IsString()
-  @MinLength(10)
-  @MaxLength(10)
-  @Matches(/^\d{10}$/, {
-    message: 'La cédula debe contener exactamente 10 dígitos',
-  })
-  cedula!: string;
+
 }

@@ -12,10 +12,6 @@ export class UserResponseDto {
 
   @ApiProperty()
   @Expose()
-  cedula: string;
-
-  @ApiProperty()
-  @Expose()
   email: string;
 
   @ApiProperty()

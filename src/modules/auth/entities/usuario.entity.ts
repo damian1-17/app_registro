@@ -20,8 +20,7 @@ export class Usuario {
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   nombre: string;
-  @Column({ type: 'varchar', length: 10, nullable: false , unique: true})
-  cedula: string;
+
 
   
   @Column({ type: 'varchar', length: 80, unique: true, nullable: false })

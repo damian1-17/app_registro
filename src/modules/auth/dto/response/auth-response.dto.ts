@@ -10,9 +10,6 @@ export class UserResponseDto {
   @Expose()
   nombre: string;
 
-  @ApiProperty()
-  @Expose()
-  cedula: string;
 
   @ApiProperty()
   @Expose()

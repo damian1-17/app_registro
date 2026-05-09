@@ -14,8 +14,7 @@ import { RegisterDto, LoginDto, ChangePasswordDto } from '@/modules/auth/dto/req
 import { AuthResponseDto, UserResponseDto } from '@/modules/auth/dto/response/auth-response.dto';
 import { AUTH_CONSTANTS } from '@/modules/auth/constants/auth.constants';
 import { plainToClass } from 'class-transformer';
-import { AuditoriaService } from '@/modules/auditoria/services/auditoria.service';
-import { AccionAuditoria } from '@/modules/auditoria/entities/auditoria.entity';
+
 
 @Injectable()
 export class AuthService {
@@ -24,11 +23,10 @@ export class AuthService {
     private readonly usuarioRepository: Repository<Usuario>,
     private readonly tokenService: TokenService,
     private readonly sesionService: SesionService,
-    private readonly auditoriaService: AuditoriaService,
   ) { }
 
   async register(registerDto: RegisterDto): Promise<AuthResponseDto> {
-    const { email, password, nombre, cedula } = registerDto;
+    const { email, password, nombre } = registerDto;
 
 
 
@@ -40,25 +38,6 @@ export class AuthService {
       throw new ConflictException('El email ya está registrado');
     }
 
-    //verificar si no es undefined
-    if (!cedula) {
-      throw new BadRequestException('La cédula es requerida');
-    }
-
-    //veridicar si la cedula ya existe
-    const existingUserByCedula = await this.usuarioRepository.findOne({
-      where: { cedula: registerDto.cedula },
-    });
-
-    if (existingUserByCedula) {
-      throw new ConflictException('La cédula ya está registrada');
-    }
-
-
-    //TODO: Validar formato de cédula (10 dígitos y algoritmo de validación)
-    if (!validarCedula(cedula)) {
-      throw new BadRequestException('La cédula no es válida');
-    }
 
 
 
@@ -70,7 +49,6 @@ export class AuthService {
     const usuario = this.usuarioRepository.create({
       nombre,
       email,
-      cedula,
       passwordHash,
       estado: 'activo',
     });
@@ -170,18 +148,6 @@ export class AuthService {
       sesion.idSesion,
     );
 
-    // ✅ Auditoría
-
-
-    await this.auditoriaService.registrar({
-      entidad: 'usuarios',
-      idEntidad: usuario.idUsuario,
-      accion: AccionAuditoria.LOGIN,
-      usuarioId: usuario.idUsuario,
-      usuarioEmail: usuario.email,
-      ip: ip ?? '',
-      detalles: "Login exitoso",
-    });
 
     return { ...tokens, user: this.mapToUserResponse(usuario) };
   }
@@ -219,14 +185,7 @@ export class AuthService {
       await this.sesionService.invalidateSesion(sessionId);
     }
     await this.tokenService.revokeAllUserTokens(userId);
-    // ✅ Auditoría
-    await this.auditoriaService.registrar({
-      entidad: 'usuarios',
-      idEntidad: userId,
-      accion: AccionAuditoria.LOGOUT,
-      usuarioId: userId,
-      detalles: `Logout`,
-    });
+
   }
 
   async changePassword(
@@ -264,14 +223,7 @@ export class AuthService {
 
     // Revocar todos los tokens del usuario
     await this.tokenService.revokeAllUserTokens(userId);
-    //  Auditoría
-    await this.auditoriaService.registrar({
-      entidad: 'usuarios',
-      idEntidad: userId,
-      accion: AccionAuditoria.CAMBIO_PASSWORD,
-      usuarioId: userId,
-      detalles: `Contraseña cambiada`,
-    });
+
   }
 
   async validateUser(userId: number): Promise<Usuario | null> {
