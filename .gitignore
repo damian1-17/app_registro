@@ -1,0 +1,58 @@
+# ===========================
+# Node / NestJS
+# ===========================
+node_modules/
+dist/
+build/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+src/modules/auth/controllers/test.controller.ts
+
+# ===========================
+# Archivos de entorno
+# ===========================
+.env
+.env.*
+!.env.example
+
+# ===========================
+# TypeScript
+# ===========================
+*.tsbuildinfo
+
+# ===========================
+# IDEs y editores
+# ===========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# ===========================
+# Sistema Operativo
+# ===========================
+.DS_Store
+Thumbs.db
+
+# ===========================
+# Logs
+# ===========================
+logs/
+*.log
+
+# ===========================
+# Cache y temporales
+# ===========================
+.cache/
+.tmp/
+.temp/
+
+# ===========================
+# Prisma (si usas)
+# ===========================
+prisma/dev.db*
