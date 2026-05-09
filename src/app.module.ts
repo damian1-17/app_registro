@@ -7,20 +7,14 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { RolesGuard } from "./modules/auth/guards/roles.guard";
 import { PermissionsGuard } from "./modules/auth/guards/permissions.guard";
 import { JwtAuthGuard } from "./modules/auth/guards/jwt-auth.guard";
-import { pedidosDS } from '@/config/pedidosDS.config';
-import { facturacionDS } from '@/config/facturacionDS.config';
-import { seguridadDS } from '@/config/seguridadDS.config';
 
-//facturación
+
 import { EventEmitterModule } from "@nestjs/event-emitter";
-
 import { DatabaseModule } from "./database/database.module";
 
 
 //Usuarios
 import { UsuariosModule } from './modules/usuarios/usuarios.module';
-
-
 //ROLES
 import { RolesModule } from './modules/roles/roles.module';
 

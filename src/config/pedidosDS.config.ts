@@ -6,8 +6,9 @@ export const pedidosDS: TypeOrmModuleOptions = {
   host: process.env.PEDIDOS_DB_HOST,
   port: Number(process.env.PEDIDOS_DB_PORT),
   username: process.env.PEDIDOS_DB_USER,
-  password: process.env.PEDIDOS_DB_PASS,
+  password: String(process.env.PEDIDOS_DB_PASS),
   database: process.env.PEDIDOS_DB_NAME,
   synchronize: false,
   logging: true,
+  ssl: false,
 };

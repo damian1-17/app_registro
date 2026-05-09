@@ -5,7 +5,6 @@ import AppDataSource from '@/config/typeorm.config';
 
 import { seedInitialData } from './initial-seed';
 import { CreateUsersSeeder } from './user.seeder';
-import { seedCommerceData } from './commerce-seed';
 import { SeedAuditReadPermission1734567890000 } from './AuditReadPermission';
 
 async function bootstrap() {
@@ -39,13 +38,6 @@ async function bootstrap() {
     await auditSeeder.up(dataSource.createQueryRunner());
     console.log('🎉 Permiso de auditoría creado correctamente');
 
-    console.log('----------------------------------------');
-    console.log('    EJECUTANDO SEED COMMERCE');
-    console.log('----------------------------------------');
-
-    await seedCommerceData(dataSource);
-
-    console.log('🎉 Seeders de comercio completados');
 
   } catch (error) {
     console.error('❌ Error ejecutando seeders:', error);
