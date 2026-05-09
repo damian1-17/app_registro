@@ -10,8 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { Usuario } from '@/modules/auth/entities/usuario.entity';
 import { PasswordRecoveryCode } from '@/modules/auth/entities/password-recovery-code.entity';
 import { EmailService } from '@/modules/auth/services/email.service';
-import { AuditoriaService } from '@/modules/auditoria/services/auditoria.service';
-import { AccionAuditoria } from '@/modules/auditoria/entities/auditoria.entity';
+
 import { AUTH_CONSTANTS } from '@/modules/auth/constants/auth.constants';
 import {
   RequestPasswordRecoveryDto,
@@ -28,7 +27,6 @@ export class PasswordRecoveryService {
     @InjectRepository(PasswordRecoveryCode, 'PEDIDOS_DB')
     private readonly recoveryCodeRepository: Repository<PasswordRecoveryCode>,
     private readonly emailService: EmailService,
-    private readonly auditoriaService: AuditoriaService,
   ) {}
 
   /**
@@ -108,16 +106,6 @@ export class PasswordRecoveryService {
       );
     }
 
-    // Registrar auditoría
-    await this.auditoriaService.registrar({
-      entidad: 'usuarios',
-      idEntidad: usuario.idUsuario,
-      accion: AccionAuditoria.OTROS,
-      usuarioId: usuario.idUsuario,
-      usuarioEmail: usuario.email,
-      ip: ip ?? '',
-      detalles: 'Solicitud de recuperación de contraseña',
-    });
 
     return {
       message:
@@ -156,31 +144,12 @@ export class PasswordRecoveryService {
     });
 
     if (!recoveryCode) {
-      await this.auditoriaService.registrar({
-        entidad: 'usuarios',
-        idEntidad: usuario.idUsuario,
-        accion: AccionAuditoria.OTROS,
-        usuarioId: usuario.idUsuario,
-        usuarioEmail: usuario.email,
-        ip: ip ?? '',
-        detalles: 'Intento fallido de recuperación - código inválido',
-      });
 
       throw new BadRequestException('Código de recuperación inválido o expirado');
     }
 
     // Verificar si el código expiró
     if (new Date() > recoveryCode.expiresAt) {
-      await this.auditoriaService.registrar({
-        entidad: 'usuarios',
-        idEntidad: usuario.idUsuario,
-        accion: AccionAuditoria.OTROS,
-        usuarioId: usuario.idUsuario,
-        usuarioEmail: usuario.email,
-        ip: ip ?? '',
-        detalles: 'Intento fallido de recuperación - código expirado',
-      });
-
       throw new BadRequestException('Código de recuperación inválido o expirado');
     }
 
@@ -212,17 +181,6 @@ export class PasswordRecoveryService {
       this.logger.error('Error al enviar email de confirmación:', error);
       // No lanzar error, la contraseña ya fue cambiada
     }
-
-    // Registrar auditoría
-    await this.auditoriaService.registrar({
-      entidad: 'usuarios',
-      idEntidad: usuario.idUsuario,
-      accion: AccionAuditoria.CAMBIO_PASSWORD,
-      usuarioId: usuario.idUsuario,
-      usuarioEmail: usuario.email,
-      ip: ip ?? '',
-      detalles: 'Contraseña restablecida mediante código de recuperación',
-    });
 
     this.logger.log(
       `Contraseña restablecida exitosamente para usuario: ${usuario.email}`,

@@ -37,13 +37,6 @@ export class UsuariosService {
             throw new ConflictException('El email ya está registrado');
         }
 
-        // Verificar si la cédula ya existe
-        const existingCedula = await this.usuarioRepository.findOne({
-            where: { cedula: createUsuarioDto.cedula },
-        });
-        if (existingCedula) {
-            throw new ConflictException('La cédula ya está registrada');
-        }
 
         // Hash de la contraseña
         const passwordHash = await bcrypt.hash(createUsuarioDto.password, 10);
@@ -51,7 +44,6 @@ export class UsuariosService {
         // Crear usuario
         const usuario = this.usuarioRepository.create({
             nombre: createUsuarioDto.nombre,
-            cedula: createUsuarioDto.cedula,
             email: createUsuarioDto.email,
             passwordHash,
             estado: createUsuarioDto.estado || 'activo',
@@ -155,15 +147,7 @@ export class UsuariosService {
             }
         }
 
-        // Verificar cédula única (si se está actualizando)
-        if (updateUsuarioDto.cedula && updateUsuarioDto.cedula !== usuario.cedula) {
-            const existingCedula = await this.usuarioRepository.findOne({
-                where: { cedula: updateUsuarioDto.cedula },
-            });
-            if (existingCedula) {
-                throw new ConflictException('La cédula ya está registrada');
-            }
-        }
+
 
         // Actualizar contraseña si se proporciona
         if (updateUsuarioDto.password) {
@@ -184,7 +168,6 @@ export class UsuariosService {
         // Actualizar otros campos
         Object.assign(usuario, {
             nombre: updateUsuarioDto.nombre ?? usuario.nombre,
-            cedula: updateUsuarioDto.cedula ?? usuario.cedula,
             email: updateUsuarioDto.email ?? usuario.email,
             estado: updateUsuarioDto.estado ?? usuario.estado,
         });
