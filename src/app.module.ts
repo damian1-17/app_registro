@@ -3,19 +3,18 @@ import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from '@nestjs/core';
 
 import { AuthModule } from "./modules/auth/auth.module";
-import { ProductosModule } from './modules/productos/productos.module';
-import { PedidosModule } from './modules/pedidos/pedidos.module';
+
 import { RolesGuard } from "./modules/auth/guards/roles.guard";
 import { PermissionsGuard } from "./modules/auth/guards/permissions.guard";
 import { JwtAuthGuard } from "./modules/auth/guards/jwt-auth.guard";
-import { AuditoriaModule } from './modules/auditoria/auditoria.module';
- import { FacturacionModule } from './modules/facturacion/facturacion.module'; // ← NUEVO
-
+import { pedidosDS } from '@/config/pedidosDS.config';
+import { facturacionDS } from '@/config/facturacionDS.config';
+import { seguridadDS } from '@/config/seguridadDS.config';
 
 //facturación
 import { EventEmitterModule } from "@nestjs/event-emitter";
 
-import { DataSources } from "./database/data-sources.module";
+import { DatabaseModule } from "./database/data-sources.module";
 
 
 //Usuarios
@@ -32,15 +31,13 @@ import { RolesModule } from './modules/roles/roles.module';
       isGlobal: true,
     }),
 
+
     //FACTURACIÓN
     EventEmitterModule.forRoot(),
-    DataSources,       //  Módulo de conexión a múltiples bases de datos
-    AuditoriaModule,  //  Módulo de auditoría
+    DatabaseModule,       //  Módulo de conexión a múltiples bases de datos
     //  Módulos reales del sistema
     AuthModule,
-    ProductosModule,
-    PedidosModule,
-    FacturacionModule, // ← NUEVO
+    // ← NUEVO
     UsuariosModule,   //  Módulo de gestión de usuarios
     RolesModule,      //  Módulo de gestión de roles
   ],

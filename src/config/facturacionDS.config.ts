@@ -1,16 +1,14 @@
-import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+// src/config/facturacionDS.config.ts
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 export const facturacionDS: TypeOrmModuleOptions = {
-  type: "postgres",
-
-  host: process.env.DB2_HOST || "aws-1-us-east-2.pooler.supabase.com", // <-- pon el real
-  port: Number(process.env.DB2_PORT || 6543),
-  username: process.env.DB2_USER || "postgres.bmetejwtnaulmukcorsp",
-  password: process.env.DB2_PASS || "factswemp123.", // <-- tu pass
-  database: process.env.DB2_NAME || "postgres",   // <-- SIEMPRE ES postgres
-
-  ssl: { rejectUnauthorized: false },
-
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+  name: 'facturacion',
+  type: 'postgres',
+  host: process.env.FACTURACION_DB_HOST,
+  port: Number(process.env.FACTURACION_DB_PORT),
+  username: process.env.FACTURACION_DB_USER,
+  password: process.env.FACTURACION_DB_PASS,
+  database: process.env.FACTURACION_DB_NAME,
   synchronize: false,
+  logging: true,
 };
