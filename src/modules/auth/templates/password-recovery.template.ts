@@ -1,6 +1,6 @@
 import { emailBaseStyles, recoveryStyles } from './styles/email.styles';
 
-export function getPasswordRecoveryTemplate(nombre: string, code: string): string {
+export function getPasswordRecoveryTemplate(nombre: string, code: string, logoUrl: string): string {
   return `
 <!DOCTYPE html>
 <html lang="es">
@@ -15,9 +15,11 @@ export function getPasswordRecoveryTemplate(nombre: string, code: string): strin
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1>🔐 Recuperación de Contraseña</h1>
-    </div>
+<div class="header">
+  <div style="margin-bottom: 16px;">
+<img src="${logoUrl}" alt="IEEE UTN" style="max-width: 280px; height: auto;" />  </div>
+  <h1>🔐 Recuperación de Contraseña</h1>
+</div>
 
     <p>Hola <strong>${nombre}</strong>,</p>
     <p>Has solicitado restablecer tu contraseña. Utiliza el siguiente código para continuar:</p>

@@ -4,11 +4,17 @@ import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
 import { AppModule } from '@/app.module';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Servir assets estáticos
+  app.useStaticAssets(join(process.cwd(), 'src', 'assets'), {
+    prefix: '/assets',
+  });
   // Cookie Parser - IMPORTANTE
   app.use(cookieParser());
 
@@ -23,7 +29,7 @@ async function bootstrap() {
 
   // CORS con credentials
   app.enableCors({
-    origin:[
+    origin: [
       'https://front-pedidos-vue.vercel.app',
       'http://localhost:3000',
       'http://localhost:4200',

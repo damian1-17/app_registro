@@ -1,7 +1,6 @@
 import { emailBaseStyles, changedStyles } from './styles/email.styles';
 
-export function getPasswordChangedTemplate(nombre: string): string {
-  return `
+export function getPasswordChangedTemplate(nombre: string, logoSvg: string): string {  return `
 <!DOCTYPE html>
 <html lang="es">
 <head>
