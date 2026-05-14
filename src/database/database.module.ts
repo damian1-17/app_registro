@@ -15,6 +15,8 @@ import { Permiso } from '@/modules/auth/entities/permiso.entity';
 import { Token } from '@/modules/auth/entities/token.entity';
 import { Sesion } from '@/modules/auth/entities/sesion.entity';
 import { PasswordRecoveryCode } from '@/modules/auth/entities/password-recovery-code.entity';
+import { UsuarioQr } from '@/modules/qr/entities/usuario-qr.entity';
+import { TipoQr } from '@/modules/qr/entities/tipo-qr.entity';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { PasswordRecoveryCode } from '@/modules/auth/entities/password-recovery-
     // TypeOrmModule.forRoot({ ...facturacionDS, name: 'FACTURACION_DB' }),
     TypeOrmModule.forRoot({
       ...seguridadDS, name: 'SEGURIDAD_DB',
-      entities: [Usuario, Rol, Permiso, Token, Sesion, PasswordRecoveryCode]
+      entities: [Usuario, Rol, Permiso, Token, Sesion, PasswordRecoveryCode, UsuarioQr, TipoQr]
     }),
   ],
   providers: [DatabaseService],

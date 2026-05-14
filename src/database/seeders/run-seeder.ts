@@ -5,7 +5,6 @@ import AppDataSource from '@/config/typeorm.config';
 
 import { seedInitialData } from './initial-seed';
 import { CreateUsersSeeder } from './user.seeder';
-import { SeedAuditReadPermission1734567890000 } from './AuditReadPermission';
 
 async function bootstrap() {
   await AppDataSource.initialize();
@@ -33,10 +32,6 @@ async function bootstrap() {
         console.log('----------------------------------------');
     console.log('    EJECUTANDO SEED PERMISO AUDIT READ');
     console.log('----------------------------------------');
-
-    const auditSeeder = new SeedAuditReadPermission1734567890000();
-    await auditSeeder.up(dataSource.createQueryRunner());
-    console.log('🎉 Permiso de auditoría creado correctamente');
 
 
   } catch (error) {

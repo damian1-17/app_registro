@@ -23,7 +23,7 @@ export const FacturacionDataSource = new DataSource({
 export const SeguridadDataSource = new DataSource({
   ...(seguridadDS as any),
   entities:   ['src/seguridad/**/*.entity{.ts,.js}'],
-  migrations: ['src/database/migrations/seguridad/*{.ts,.js}'],
+  migrations: ['src/database/migrations/*{.ts,.js}'],
 });
 
 export default SeguridadDataSource;
