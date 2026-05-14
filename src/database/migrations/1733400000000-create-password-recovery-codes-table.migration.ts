@@ -49,28 +49,33 @@ export class CreatePasswordRecoveryCodesTable1234567890123
           },
         ],
       }),
-      true,
-    );
-
-    // Crear índice para búsquedas eficientes
-    await queryRunner.query(
-      `CREATE INDEX idx_password_recovery_usuario_code ON password_recovery_codes(usuario_id, code, used)`,
+      true, // ← IF NOT EXISTS
     );
 
     await queryRunner.query(
-      `CREATE INDEX idx_password_recovery_expires ON password_recovery_codes(expires_at)`,
+      `CREATE INDEX IF NOT EXISTS idx_password_recovery_usuario_code ON password_recovery_codes(usuario_id, code, used)`,
     );
 
-    // Crear foreign key
-    await queryRunner.createForeignKey(
-      'password_recovery_codes',
-      new TableForeignKey({
-        columnNames: ['usuario_id'],
-        referencedTableName: 'usuarios',
-        referencedColumnNames: ['id_usuario'],
-        onDelete: 'CASCADE',
-      }),
+    await queryRunner.query(
+      `CREATE INDEX IF NOT EXISTS idx_password_recovery_expires ON password_recovery_codes(expires_at)`,
     );
+
+    const table = await queryRunner.getTable('password_recovery_codes');
+    const fkExists = table?.foreignKeys.some(fk =>
+      fk.columnNames.includes('usuario_id'),
+    );
+
+    if (!fkExists) {
+      await queryRunner.createForeignKey(
+        'password_recovery_codes',
+        new TableForeignKey({
+          columnNames: ['usuario_id'],
+          referencedTableName: 'usuarios',
+          referencedColumnNames: ['id_usuario'],
+          onDelete: 'CASCADE',
+        }),
+      );
+    }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

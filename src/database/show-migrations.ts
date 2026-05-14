@@ -1,21 +1,27 @@
-import AppDataSource from '@/config/typeorm.config';
+
+import { SeguridadDataSource }   from '@/config/typeorm.seguridad';
+
+const dataSources = [
+  { name: 'Seguridad',   ds: SeguridadDataSource },
+
+];
 
 async function showMigrations() {
-  try {
-    await AppDataSource.initialize();
-    console.log('📊 Estado de las migraciones:');
-    const migrations = await AppDataSource.showMigrations();
-    if (migrations) {
-      console.log('⚠️ Hay migraciones pendientes.');
-    } else {
-      console.log('✅ Todas las migraciones están aplicadas.');
-    }
-  } catch (error) {
-    console.error('❌ Error al mostrar migraciones:', error);
-    process.exit(1);
-  } finally {
-    if (AppDataSource.isInitialized) {
-      await AppDataSource.destroy();
+  for (const { name, ds } of dataSources) {
+    try {
+      await ds.initialize();
+      console.log(`\n📊 Estado de migraciones — ${name}:`);
+      const hasPending = await ds.showMigrations();
+      if (hasPending) {
+        console.log(`⚠️  Hay migraciones pendientes en ${name}.`);
+      } else {
+        console.log(`✅ Todas las migraciones de ${name} están aplicadas.`);
+      }
+    } catch (error) {
+      console.error(`❌ Error al mostrar migraciones de ${name}:`, error);
+      process.exit(1);
+    } finally {
+      if (ds.isInitialized) await ds.destroy();
     }
   }
 }

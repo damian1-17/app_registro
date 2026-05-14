@@ -34,7 +34,7 @@ export class UsuarioQr {
    * create({ tipoQrId: X }) usamos el nombre de la FK expuesto
    * por la relación. Ver nota en el servicio.
    */
-  @Column({ name: 'id_tipo_qr', type: 'int', insert: false, update: false })
+  @Column({ name: 'id_tipo_qr', type: 'int' })
   @Index('idx_qr_tipo')
   idTipoQr!: number;
 

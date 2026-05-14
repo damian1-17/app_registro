@@ -10,10 +10,11 @@ import { UsuariosQrService } from './services/usuarios-qr.service';
 
 import { TiposQrController } from './controllers/tipos-qr.controller';
 import { UsuariosQrController } from './controllers/usuarios-qr.controller';
+import { Usuario } from '../auth/entities/usuario.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TipoQr, UsuarioQr], 'SEGURIDAD_DB'),
+    TypeOrmModule.forFeature([TipoQr, UsuarioQr, Usuario], 'SEGURIDAD_DB'),
     // ☝️ Cambia 'EVENTOS_DB' por el nombre de tu conexión TypeORM
     //    Si solo tienes una conexión, puedes omitir el segundo argumento.
   ],

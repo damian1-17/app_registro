@@ -9,7 +9,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { plainToInstance } from 'class-transformer';
 import { v4 as uuidv4 } from 'uuid';
-
+import { Usuario } from '@/modules/auth/entities/usuario.entity';
+import { AsignarQrARolDto } from '@/modules/qr/dto/asignar-qr-a-rol.dto';
 import { UsuarioQr, EstadoQr } from '../entities/usuario-qr.entity';
 import { TipoQr } from '../entities/tipo-qr.entity';
 import {
@@ -23,6 +24,7 @@ import {
   QueryUsuarioQrDto,
   TipoQrResponseDto,
 } from '../dto';
+import { Rol } from '@/modules/auth/entities/rol.entity'; 
 
 @Injectable()
 export class UsuariosQrService {
@@ -32,7 +34,77 @@ export class UsuariosQrService {
 
     @InjectRepository(TipoQr, 'SEGURIDAD_DB')
     private readonly tipoQrRepository: Repository<TipoQr>,
-  ) {}
+    @InjectRepository(Usuario, 'SEGURIDAD_DB')
+    private readonly usuarioRepository: Repository<Usuario>,
+  ) { }
+
+
+
+  // ... métodos existentes sin cambios ...
+
+  /**
+   * Asigna un tipo de QR específico a TODOS los usuarios con rol 'user'.
+   * Omite silenciosamente a quienes ya lo tengan asignado.
+   */
+
+  async asignarQrARolUser(dto: AsignarQrARolDto): Promise<{
+    asignados: number;
+    omitidos: number;
+    detalle: UsuarioQrResponseDto[];
+  }> {
+    const ROL_USER = 'user'; // ← nombre exacto en tabla roles
+
+    const tipo = await this.validarTipoQr(dto.idTipoQr);
+
+    // ── JOIN a través de la tabla pivote usuarios_roles ──────
+    const usuarios = await this.usuarioRepository
+      .createQueryBuilder('u')
+      .innerJoin('u.roles', 'r')          // JOIN usuarios_roles + roles
+      .where('r.nombre = :rol', { rol: ROL_USER })
+      .andWhere('u.estado = :estado', { estado: 'activo' })
+      .select(['u.idUsuario'])             // solo lo que necesitamos
+      .getMany();
+
+    if (!usuarios.length) {
+      throw new NotFoundException(
+        `No se encontraron usuarios activos con rol '${ROL_USER}'`,
+      );
+    }
+
+    let asignados = 0;
+    let omitidos = 0;
+    const detalle: UsuarioQrResponseDto[] = [];
+
+    for (const usuario of usuarios) {
+      const yaExiste = await this.usuarioQrRepository.findOne({
+        where: {
+          idUsuario: usuario.idUsuario,
+          idTipoQr: tipo.idTipoQr,
+          activo: true,
+        },
+      });
+
+      if (yaExiste) {
+        omitidos++;
+        continue;
+      }
+
+      const nuevoQr = this.usuarioQrRepository.create({
+        idUsuario: usuario.idUsuario,
+        tipoQr: tipo,
+        token: uuidv4(),
+        estado: EstadoQr.ACTIVO,
+        expiracion: dto.expiracion ? new Date(dto.expiracion) : undefined,
+      });
+
+      const saved = await this.usuarioQrRepository.save(nuevoQr);
+      detalle.push(this.toResponseDto(await this.recargar(saved.idUsuarioQr)));
+      asignados++;
+    }
+
+    return { asignados, omitidos, detalle };
+  }
+
 
   // ─── Asignación ─────────────────────────────────────────────────────────────
 

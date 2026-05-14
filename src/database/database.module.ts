@@ -1,12 +1,8 @@
 // src/database/database.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { pedidosDS } from '@/config/pedidosDS.config';
-import { facturacionDS } from '@/config/facturacionDS.config';
-import { seguridadDS } from '@/config/seguridadDS.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { DatabaseService } from './services/database.service';
-
 
 // Entidades de seguridad
 import { Usuario } from '@/modules/auth/entities/usuario.entity';
@@ -20,14 +16,25 @@ import { TipoQr } from '@/modules/qr/entities/tipo-qr.entity';
 
 @Module({
   imports: [
-    // TypeOrmModule.forRoot({ ...pedidosDS, name: 'PEDIDOS_DB' }),
-    // TypeOrmModule.forRoot({ ...facturacionDS, name: 'FACTURACION_DB' }),
-    TypeOrmModule.forRoot({
-      ...seguridadDS, name: 'SEGURIDAD_DB',
-      entities: [Usuario, Rol, Permiso, Token, Sesion, PasswordRecoveryCode, UsuarioQr, TipoQr]
+    TypeOrmModule.forRootAsync({
+      name: 'SEGURIDAD_DB',
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        host:     config.get<string>('SEGURIDAD_DB_HOST'),
+        port:     config.get<number>('SEGURIDAD_DB_PORT'),
+        username: config.get<string>('SEGURIDAD_DB_USER'),
+        password: config.get<string>('SEGURIDAD_DB_PASS'),
+        database: config.get<string>('SEGURIDAD_DB_NAME'),
+        synchronize: false,
+        logging: true,
+        ssl: { rejectUnauthorized: false },
+        entities: [Usuario, Rol, Permiso, Token, Sesion, PasswordRecoveryCode, UsuarioQr, TipoQr],
+      }),
     }),
   ],
   providers: [DatabaseService],
   exports: [DatabaseService, TypeOrmModule],
 })
-export class DatabaseModule { }
+export class DatabaseModule {}

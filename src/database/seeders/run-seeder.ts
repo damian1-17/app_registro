@@ -1,13 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@/app.module';
 import { DataSource } from 'typeorm';
-import AppDataSource from '@/config/typeorm.config';
+import { SeguridadDataSource } from '@/config/typeorm.seguridad';
 
 import { seedInitialData } from './initial-seed';
 import { CreateUsersSeeder } from './user.seeder';
 
 async function bootstrap() {
-  await AppDataSource.initialize();
+  await SeguridadDataSource.initialize();
   console.log('🌱 Iniciando seeders...');
 
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -38,7 +38,7 @@ async function bootstrap() {
     console.error('❌ Error ejecutando seeders:', error);
   } finally {
     await app.close();
-    await AppDataSource.destroy();
+    await SeguridadDataSource.destroy();
   }
 }
 

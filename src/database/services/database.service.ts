@@ -11,16 +11,12 @@ export class DatabaseService implements OnModuleInit {
     // @InjectDataSource('PEDIDOS_DB')
     // private readonly pedidosDS: DataSource,
 
-    // @InjectDataSource('FACTURACION_DB')
-    // private readonly facturacionDS: DataSource,
-
     @InjectDataSource('SEGURIDAD_DB')
     private readonly seguridadDS: DataSource,
   ) {}
 
   onModuleInit() {
     // this.checkConnection(this.pedidosDS,     'PEDIDOS_DB');
-    // this.checkConnection(this.facturacionDS, 'FACTURACION_DB');
     
     this.checkConnection(this.seguridadDS,   'SEGURIDAD_DB');
   }

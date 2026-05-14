@@ -32,13 +32,26 @@ import {
 // import { RolesGuard }   from '../../auth/guards/roles.guard';
 // import { Roles }        from '../../auth/decorators/roles.decorator';
 
+
+// En tu usuarios-qr.controller.ts
+import { AsignarQrARolDto } from '../dto/asignar-qr-a-rol.dto';
+
+
+
 @ApiTags('QR - Usuarios')
 @ApiBearerAuth()
 // @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('qr')
 export class UsuariosQrController {
-  constructor(private readonly usuariosQrService: UsuariosQrService) {}
+  constructor(private readonly usuariosQrService: UsuariosQrService) { }
 
+
+  @Post('asignar-rol-user')
+  @ApiOperation({ summary: 'Asigna un QR a todos los usuarios con rol user' })
+  @ApiResponse({ status: 201, description: 'Resultado del proceso de asignación masiva' })
+  async asignarQrARolUser(@Body() dto: AsignarQrARolDto) {
+    return this.usuariosQrService.asignarQrARolUser(dto);
+  }
   // ─── Asignación ─────────────────────────────────────────────────────────────
 
   @Post('asignar')
