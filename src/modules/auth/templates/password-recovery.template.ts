@@ -15,11 +15,11 @@ export function getPasswordRecoveryTemplate(nombre: string, code: string, logoUr
 </head>
 <body>
   <div class="container">
-<div class="header">
-  <div style="margin-bottom: 16px;">
-<img src="${logoUrl}" alt="IEEE UTN" style="max-width: 280px; height: auto;" />  </div>
-  <h1>🔐 Recuperación de Contraseña</h1>
-</div>
+
+    <div class="header" style="background-color: #1a1a1a; border-radius: 8px 8px 0 0; padding: 24px; margin: -40px -40px 30px -40px;">
+      <img src="${logoUrl}" alt="IEEE MTT-S BPC Workshop" style="max-width: 320px; height: auto; display: block; margin: 0 auto;" />
+      <h1 style="color: #ffffff; margin-top: 16px; font-size: 22px;">🔐 Recuperación de Contraseña</h1>
+    </div>
 
     <p>Hola <strong>${nombre}</strong>,</p>
     <p>Has solicitado restablecer tu contraseña. Utiliza el siguiente código para continuar:</p>
@@ -45,6 +45,7 @@ export function getPasswordRecoveryTemplate(nombre: string, code: string, logoUr
       <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
       <p style="color: #6f6f6e; font-size: 12px;">© ${new Date().getFullYear()} IEEE UTN. Todos los derechos reservados.</p>
     </div>
+
   </div>
 </body>
 </html>

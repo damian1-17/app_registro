@@ -9,10 +9,13 @@ import { join } from 'path';
 
 @Injectable()
 export class EmailService {
-  private readonly logoPng = `data:image/png;base64,${readFileSync(
+  private readonly logoPngUTN = `data:image/png;base64,${readFileSync(
     join(process.cwd(), 'src', 'assets', 'ieee-utn-color.png'),
   ).toString('base64')}`;
 
+    private readonly logoPngUnificado = `data:image/png;base64,${readFileSync(
+    join(process.cwd(), 'src', 'assets', 'unificado.png'),
+  ).toString('base64')}`;
   private readonly logoUrl = `${process.env.APP_URL}/assets/ieee-utn-color.png`;
 
   private readonly logger = new Logger(EmailService.name);
@@ -84,14 +87,14 @@ export class EmailService {
         'EMAIL_FROM',
         'noreply@app.com',
       );
-      console.log('logoPng length:', this.logoPng?.length); // ← debe mostrar un número > 0
-      console.log('logoPng preview:', this.logoPng?.substring(0, 50)); // ← debe empezar con data:image/png;base64,
+      console.log('logoPng length:', this.logoPngUTN?.length); // ← debe mostrar un número > 0
+      console.log('logoPng preview:', this.logoPngUTN?.substring(0, 50)); // ← debe empezar con data:image/png;base64,
 
       await this.transporter.sendMail({
         from: emailFrom,
         to: email,
         subject: 'Recuperación de contraseña',
-        html: getPasswordRecoveryTemplate(nombre, code, this.logoPng),
+        html: getPasswordRecoveryTemplate(nombre, code, this.logoPngUnificado),
       });
 
       this.logger.log(`📧 Email de recuperación enviado a: ${email}`);
@@ -126,7 +129,7 @@ export class EmailService {
         from: emailFrom,
         to: email,
         subject: 'Contraseña actualizada exitosamente',
-        html: getPasswordChangedTemplate(nombre, this.logoPng),
+        html: getPasswordChangedTemplate(nombre, this.logoPngUTN),
       });
 
       this.logger.log(`📧 Email de confirmación enviado a: ${email}`);
